@@ -5,6 +5,7 @@ import { onError } from "../libs/errorLib";
 import "./Home.css";
 import { API } from "aws-amplify";
 import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [notes, setNotes] = useState([]);
@@ -16,20 +17,20 @@ export default function Home() {
       if (!isAuthenticated) {
         return;
       }
-  
+
       try {
         const notes = await loadNotes();
         setNotes(notes);
       } catch (e) {
         onError(e);
       }
-  
+
       setIsLoading(false);
     }
-  
+
     onLoad();
   }, [isAuthenticated]);
-  
+
   function loadNotes() {
     return API.get("notes", "/notes");
   }
@@ -43,14 +44,14 @@ export default function Home() {
           </ListGroupItem>
         </LinkContainer>
       ) : (
-        <LinkContainer key="new" to="/notes/new">
-          <ListGroupItem>
-            <h4>
-              <b>{"\uFF0B"}</b> Create a new note
+          <LinkContainer key="new" to="/notes/new">
+            <ListGroupItem>
+              <h4>
+                <b>{"\uFF0B"}</b> Create a new note
             </h4>
-          </ListGroupItem>
-        </LinkContainer>
-      )
+            </ListGroupItem>
+          </LinkContainer>
+        )
     );
   }
 
@@ -59,6 +60,14 @@ export default function Home() {
       <div className="lander">
         <h1>Scratch</h1>
         <p>A simple note taking app</p>
+        <div>
+          <Link to="/login" className="btn btn-info btn-lg">
+            Login
+        </Link>
+          <Link to="/signup" className="btn btn-success btn-lg">
+            Signup
+        </Link>
+        </div>
       </div>
     );
   }
