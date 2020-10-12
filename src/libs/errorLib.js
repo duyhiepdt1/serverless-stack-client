@@ -33,11 +33,18 @@ export function logError(error, errorInfo = null) {
 
 export function onError(error) {
   let message = error.toString();
+  let errorInfo = {};
 
   // Auth errors
   if (!(error instanceof Error) && error.message) {
     message = error.message;
+    errorInfo = error;
+    error = new Error(message);
+  } else if (error.config && error.config.ur) { // API errors
+    errorInfo.url = error.config.url;
   }
 
+  logError(error, errorInfo);
+  
   alert(message);
 }
